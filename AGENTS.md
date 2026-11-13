@@ -33,3 +33,4 @@ Mini-aplicación de práctica: Generador de contraseñas. Datos ficticios en mem
 ## Lecciones aprendidas
 Cada vez que el agente se equivoque, se escribe aquí la regla que evita repetir el
 error.
+
