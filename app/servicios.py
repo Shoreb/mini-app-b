@@ -36,3 +36,14 @@ def generar_contrasena(
         )
 
     return "".join(caracteres)
+
+
+def calcular_fuerza(contrasena: str) -> str:
+    tiene_numeros = any(caracter.isdigit() for caracter in contrasena)
+    tiene_simbolos = any(caracter in SIMBOLOS for caracter in contrasena)
+
+    if len(contrasena) >= 16 and tiene_numeros and tiene_simbolos:
+        return "fuerte"
+    if len(contrasena) < 12 or not tiene_numeros and not tiene_simbolos:
+        return "débil"
+    return "media"

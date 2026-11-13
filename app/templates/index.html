@@ -75,6 +75,29 @@
       #estado {
         min-height: 1.5em;
       }
+
+      #indicador-fuerza {
+        display: inline-block;
+        margin-bottom: 0;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        font-weight: 700;
+      }
+
+      #indicador-fuerza.fuerza-debil {
+        color: #8b1e1e;
+        background: #fde2e2;
+      }
+
+      #indicador-fuerza.fuerza-media {
+        color: #6b4d00;
+        background: #fff1bf;
+      }
+
+      #indicador-fuerza.fuerza-fuerte {
+        color: #155d32;
+        background: #d9f4e3;
+      }
     </style>
   </head>
   <body>
@@ -96,6 +119,7 @@
         <div class="acciones">
           <button type="submit">Generar contraseña</button>
           <input id="contrasena" type="text" aria-label="Contraseña generada" readonly>
+          <p id="indicador-fuerza" aria-live="polite">Fuerza: aún no generada</p>
           <button id="copiar" class="secondary" type="button">Copiar contraseña</button>
         </div>
       </form>
@@ -105,6 +129,12 @@
       const formulario = document.querySelector("#formulario");
       const campoContrasena = document.querySelector("#contrasena");
       const estado = document.querySelector("#estado");
+      const indicadorFuerza = document.querySelector("#indicador-fuerza");
+      const clasesFuerza = {
+        débil: "fuerza-debil",
+        media: "fuerza-media",
+        fuerte: "fuerza-fuerte",
+      };
 
       formulario.addEventListener("submit", async (evento) => {
         evento.preventDefault();
@@ -122,7 +152,13 @@
             throw new Error("No se pudo generar la contraseña.");
           }
           const datos = await respuesta.json();
+          const claseFuerza = clasesFuerza[datos.fuerza];
+          if (!claseFuerza) {
+            throw new Error("La respuesta contiene una fuerza de contraseña no válida.");
+          }
           campoContrasena.value = datos.contrasena;
+          indicadorFuerza.textContent = `Fuerza: ${datos.fuerza}`;
+          indicadorFuerza.className = claseFuerza;
         } catch (error) {
           estado.textContent = error.message;
         }
